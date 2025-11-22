@@ -1,0 +1,19 @@
+name: Vulnerable Pipeline
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      DEMO_SECRET: ${{ secrets.DEMO_SECRET }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Normal step
+        run: echo "Pipeline started"
